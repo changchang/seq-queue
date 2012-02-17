@@ -16,11 +16,11 @@ describe('seq-queue', function() {
 		});
 	});
 	
-	describe('#addTask' , function() {
+	describe('#push' , function() {
 		it('should change the queue status from idle to busy and invoke the task at once when task finish when queue idle', function(done) {
 			var queue = SeqQueue.createQueue(queueName, timeout);
 			queue.should.have.property('status', SeqQueue.IDLE);
-			queue.addTask(function(task) {
+			queue.push(function(task) {
 				should.exist(task);
 				task.done();
 				queue.should.have.property('status', SeqQueue.IDLE);
@@ -33,13 +33,13 @@ describe('seq-queue', function() {
 			var queue = SeqQueue.createQueue(queueName, timeout);
 			var formerTaskFinished = false;
 			//add first task
-			queue.addTask(function(task) {
+			queue.push(function(task) {
 				formerTaskFinished = true;
 				task.done();
 			});
 			queue.should.have.property('status', SeqQueue.BUSY);
 			//add second task
-			queue.addTask(function(task) {
+			queue.push(function(task) {
 				formerTaskFinished.should.be.true;
 				queue.should.have.property('status', SeqQueue.BUSY);
 				task.done();
@@ -62,14 +62,14 @@ describe('seq-queue', function() {
 				drainedEventCount++;
 			});
 			var executedTaskCount = 0;
-			queue.addTask(function(task) {
+			queue.push(function(task) {
 				executedTaskCount++;
 				task.done();
 			}).should.be.true;
 			queue.close(false);
 			queue.should.have.property('status', SeqQueue.CLOSED);
 			
-			queue.addTask(function(task) {
+			queue.push(function(task) {
 				// never should be executed
 				executedTaskCount++;
 				task.done();
@@ -91,7 +91,7 @@ describe('seq-queue', function() {
 				drainedEventCount++;
 			});
 			var executedTaskCount = 0;
-			queue.addTask(function(task) {
+			queue.push(function(task) {
 				//never should be executed
 				executedTaskCount++;
 				task.done();
@@ -120,12 +120,12 @@ describe('seq-queue', function() {
 				timeoutCount++;
 			});
 			
-			queue.addTask(function(task) {
+			queue.push(function(task) {
 				executedTaskCount++;
 				//no task.done() invoke to cause a timeout
 			}).should.be.true;
 			
-			queue.addTask(function(task) {
+			queue.push(function(task) {
 				executedTaskCount++;
 				task.done();
 			}).should.be.true;
@@ -147,7 +147,7 @@ describe('seq-queue', function() {
 				timeoutCount++;
 			});
 			
-			queue.addTask(function(task) {
+			queue.push(function(task) {
 				//no task.done() invoke to cause a timeout
 			}).should.be.true;
 			
@@ -169,13 +169,13 @@ describe('seq-queue', function() {
 				done();
 			});
 			
-			queue.addTask(function(task) {
+			queue.push(function(task) {
 				//no task.done() invoke to cause a timeout
 			}).should.be.true;
 			var start = Date.now();
 		});
 		
-		it('should use the timeout value in #addTask if it was assigned', function(done) {
+		it('should use the timeout value in #push if it was assigned', function(done) {
 			var localTimeout = timeout / 2;
 			var queue = SeqQueue.createQueue(queueName, timeout);
 			//add timeout listener
@@ -186,7 +186,7 @@ describe('seq-queue', function() {
 				done();
 			});
 			
-			queue.addTask(function(task) {
+			queue.push(function(task) {
 				//no task.done() invoke to cause a timeout
 			}, localTimeout).should.be.true;
 			var start = Date.now();
