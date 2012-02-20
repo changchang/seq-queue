@@ -1,16 +1,14 @@
 var should = require('should');
 var SeqQueue = require('../lib/seq-queue');
 
-var queueName = 'test-queue';
 var timeout = 1000;
 
 describe('seq-queue', function() {
 	
 	describe('#createQueue', function() {
 		it('should return a seq-queue instance with init properties', function() {
-			var queue = SeqQueue.createQueue(queueName, timeout);
+			var queue = SeqQueue.createQueue(timeout);
 			should.exist(queue);
-			queue.should.have.property('name', queueName);
 			queue.should.have.property('timeout', timeout);
 			queue.should.have.property('status', SeqQueue.IDLE);
 		});
@@ -18,7 +16,7 @@ describe('seq-queue', function() {
 	
 	describe('#push' , function() {
 		it('should change the queue status from idle to busy and invoke the task at once when task finish when queue idle', function(done) {
-			var queue = SeqQueue.createQueue(queueName, timeout);
+			var queue = SeqQueue.createQueue(timeout);
 			queue.should.have.property('status', SeqQueue.IDLE);
 			queue.push(function(task) {
 				should.exist(task);
@@ -30,7 +28,7 @@ describe('seq-queue', function() {
 		});
 		
 		it('should keep the status busy and keep the new task wait until the former tasks finish when queue busy', function(done) {
-			var queue = SeqQueue.createQueue(queueName, timeout);
+			var queue = SeqQueue.createQueue(timeout);
 			var formerTaskFinished = false;
 			//add first task
 			queue.push(function(task) {
@@ -52,7 +50,7 @@ describe('seq-queue', function() {
 	
 	describe('#close', function() {
 		it('should not accept new request but should execute the rest task in queue when close gracefully', function(done) {
-			var queue = SeqQueue.createQueue(queueName, timeout);
+			var queue = SeqQueue.createQueue(timeout);
 			var closedEventCount = 0;
 			var drainedEventCount = 0;
 			queue.on('closed', function() {
@@ -85,7 +83,7 @@ describe('seq-queue', function() {
 		});
 		
 		it('should not execute any task and emit a drained event when close forcefully', function(done) {
-			var queue = SeqQueue.createQueue(queueName, timeout);
+			var queue = SeqQueue.createQueue(timeout);
 			var drainedEventCount = 0;
 			queue.on('drained', function() {
 				drainedEventCount++;
@@ -110,7 +108,7 @@ describe('seq-queue', function() {
 	
 	describe('#timeout', function() {
 		it('should emit timeout event and execute the next task when a task timeout by default', function(done) {
-			var queue = SeqQueue.createQueue(queueName);
+			var queue = SeqQueue.createQueue();
 			var executedTaskCount = 0;
 			var timeoutCount = 0;
 			//add timeout listener
@@ -139,7 +137,7 @@ describe('seq-queue', function() {
 		});
 		
 		it('should never timeout after close forcefully', function(done) {
-			var queue = SeqQueue.createQueue(queueName, timeout);
+			var queue = SeqQueue.createQueue(timeout);
 			var timeoutCount = 0;
 			//add timeout listener
 			queue.on('timeout', function(task) {
@@ -162,7 +160,7 @@ describe('seq-queue', function() {
 		
 		it('should use the global timeout value by default', function(done) {
 			var globalTimeout = timeout + 100;
-			var queue = SeqQueue.createQueue(queueName, globalTimeout);
+			var queue = SeqQueue.createQueue(globalTimeout);
 			//add timeout listener
 			queue.on('timeout', function(task) {
 				(Date.now() - start).should.not.be.below(globalTimeout);
@@ -177,7 +175,7 @@ describe('seq-queue', function() {
 		
 		it('should use the timeout value in #push if it was assigned', function(done) {
 			var localTimeout = timeout / 2;
-			var queue = SeqQueue.createQueue(queueName, timeout);
+			var queue = SeqQueue.createQueue(timeout);
 			//add timeout listener
 			queue.on('timeout', function(task) {
 				var diff = Date.now() - start;
