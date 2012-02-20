@@ -5,6 +5,7 @@
 	"description": "A simple tool to keep requests to be executed in order.", 
 	"homepage": "https://github.com/changchang/seq-queue", 
 	"repository": {
+		"type": "git", 
 		"url": "git@github.com:changchang/seq-queue.git"
 	}, 
 	"dependencies": {
