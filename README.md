@@ -45,7 +45,7 @@ Add a task into the queue instance.
 + fn(task) - The function that describes the content of task and would be invoke by queue. `fn` takes a arguemnt task and we *must* call task.done() to tell queue current task has finished. 
 + timeout - Timeout in ms for `fn`. If specified, it would overwrite the gloabal timeout that set by `createQueue` for `fn`.
 
-###close(force)
+###queue.close(force)
 Close the queue. A closed queue would stop receiving new task immediately. And the left tasks would be treated in different ways decided by `force`.
 ####Arguments
 + force - If true, queue would stop working immediately and ignore any tasks left in queue. Otherwise queue would execute the tasks in queue and then stop.
@@ -53,7 +53,7 @@ Close the queue. A closed queue would stop receiving new task immediately. And t
 ##Event
 Seq-queue instances extend the EventEmitter and would emit events in their life cycles.
 ###'timeout'(totask)
-If current task not invoke task.done() within the timeout ms, a timeout event would be emit. totask.fn and totask.timeout is the `fn` and `timeout` arguments that passed by `push`.
+If current task not invoke task.done() within the timeout ms, a timeout event would be emit. totask.fn and totask.timeout is the `fn` and `timeout` arguments that passed by `queue.push(2)`.
 ###'closed'
 Emit when the close(false) is invoked.
 ###'drained'
