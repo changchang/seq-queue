@@ -37,13 +37,13 @@ queue.push(function(task) {
 
 ##API
 ###seqqueue.createQueue(timeout)
-Create a new queue instance. A gloabal timeout value in ms for the new instance can be set by `timeout` parameter or use the default timeout (3ms) by no parameter.
+Create a new queue instance. A global timeout value in ms for the new instance can be set by `timeout` parameter or use the default timeout (3ms) by no parameter.
 
 ###queue.push(fn, timeout)
 Add a task into the queue instance. 
 ####Arguments
 + fn(task) - The function that describes the content of task and would be invoke by queue. `fn` takes a arguemnt task and we *must* call task.done() to tell queue current task has finished. 
-+ timeout - Timeout in ms for `fn`. If specified, it would overwrite the gloabal timeout that set by `createQueue` for `fn`.
++ timeout - Timeout in ms for `fn`. If specified, it would overwrite the global timeout that set by `createQueue` for `fn`.
 
 ###queue.close(force)
 Close the queue. A closed queue would stop receiving new task immediately. And the left tasks would be treated in different ways decided by `force`.
