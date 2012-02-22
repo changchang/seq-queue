@@ -37,7 +37,7 @@ queue.push(function(task) {
 
 ##API
 ###seqqueue.createQueue(timeout)
-Create a new queue instance. A global timeout value in ms for the new instance can be set by `timeout` parameter or use the default timeout (3ms) by no parameter.
+Create a new queue instance. A global timeout value in ms for the new instance can be set by `timeout` parameter or use the default timeout (3s) by no parameter.
 
 ###queue.push(fn, timeout)
 Add a task into the queue instance. 
