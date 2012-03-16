@@ -24,6 +24,8 @@ queue.push(function(task) {
 	setTimeout(function() {
 		console.log('hello ');
 		task.done();
+	}, function() {
+		console.log('task timeout');
 	}, 1000);
 });
 
@@ -39,10 +41,11 @@ queue.push(function(task) {
 ###seqqueue.createQueue(timeout)
 Create a new queue instance. A global timeout value in ms for the new instance can be set by `timeout` parameter or use the default timeout (3s) by no parameter.
 
-###queue.push(fn, timeout)
+###queue.push(fn, ontimeout, timeout)
 Add a task into the queue instance. 
 ####Arguments
-+ fn(task) - The function that describes the content of task and would be invoke by queue. `fn` takes a arguemnt task and we *must* call task.done() to tell queue current task has finished. 
++ fn(task) - The function that describes the content of task and would be invoke by queue. `fn` takes a arguemnt task and we *must* call task.done() to tell queue current task has finished.
++ ontimeout() - Callback for task timeout. 
 + timeout - Timeout in ms for `fn`. If specified, it would overwrite the global timeout that set by `createQueue` for `fn`.
 
 ###queue.close(force)
