@@ -46,6 +46,23 @@ describe('seq-queue', function() {
 			});
 			queue.should.have.property('status', SeqQueue.BUSY);
 		});
+		
+		it('should ok if the task call done() directly', function(done) {
+			var queue = SeqQueue.createQueue();
+			var taskCount = 0;
+			queue.push(function(task) {
+				taskCount++;
+				task.done();
+			});
+			queue.push(function(task) {
+				taskCount++;
+				task.done();
+			});
+			setTimeout(function() {
+				taskCount.should.equal(2);
+				done();
+			}, 500);
+		});
 	});
 	
 	describe('#close', function() {
@@ -226,6 +243,36 @@ describe('seq-queue', function() {
 				//no task.done() invoke to cause a timeout
 			}, null, localTimeout).should.be.true;
 			var start = Date.now();
+		});
+	});
+	
+	describe('#error', function() {
+		it('should emit an error event and invoke next task when a task throws an event', function(done) {
+			var queue = SeqQueue.createQueue();
+			var errorCount = 0;
+			var taskCount = 0;
+			//add timeout listener
+			queue.on('error', function(err, task) {
+				errorCount++;
+				should.exist(err);
+				should.exist(task);
+			});
+			
+			queue.push(function(task) {
+				taskCount++;
+				throw new Error('some error');
+			}).should.be.true;
+			
+			queue.push(function(task) {
+				taskCount++;
+				task.done();
+			});
+			
+			setTimeout(function() {
+				taskCount.should.equal(2);
+				errorCount.should.equal(1);
+				done();
+			}, 500);
 		});
 	});
 });
