@@ -57,6 +57,8 @@ Close the queue. A closed queue would stop receiving new task immediately. And t
 Seq-queue instances extend the EventEmitter and would emit events in their life cycles.
 ###'timeout'(totask)
 If current task not invoke task.done() within the timeout ms, a timeout event would be emit. totask.fn and totask.timeout is the `fn` and `timeout` arguments that passed by `queue.push(2)`.
+###'error'(err, task)
+If the task function (not callbacks) throws an uncaught error, queue would emit an error event and passes the err and task informations by event callback arguments.
 ###'closed'
 Emit when the close(false) is invoked.
 ###'drained'
