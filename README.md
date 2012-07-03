@@ -20,21 +20,27 @@ var seqqueue = require('seq-queue');
 
 var queue = seqqueue.createQueue(1000);
 
-queue.push(function(task) {
-	setTimeout(function() {
-		console.log('hello ');
-		task.done();
-	}, function() {
-		console.log('task timeout');
-	}, 1000);
-});
+queue.push(
+  function(task) {
+    setTimeout(function() {
+      console.log('hello ');
+      task.done();
+    }, 500);
+  }, 
+  function() {
+    console.log('task timeout');
+  }, 
+  1000
+);
 
-queue.push(function(task) {
-	setTimeout(function() {
-		console.log('world~');
-		task.done();
-	}, 500);
-});
+queue.push(
+  function(task) {
+    setTimeout(function() {
+      console.log('world~');
+      task.done();
+    }, 500);
+  }
+);
 ``` 
 
 ##API
