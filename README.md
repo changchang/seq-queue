@@ -9,7 +9,7 @@ Seq-queue is a FIFO task queue and we can push tasks as we wish, anytime(before 
 
 Seq-queue add timeout for each task execution. If a task throws an uncaught exception in its call back or a developer forgets to call `task.done()` callback, queue would be blocked and would not execute the left tasks. To avoid these situations, seq-queue set a timeout for each task. If a task timeout, queue would drop the task and notify develop by a 'timeout' event and then invoke the next task. Any `task.done()` invoked in a timeout task would be ignored.
 
-Tags: node.js
++ Tags: node.js
 
 ##Installation
 ```
