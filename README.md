@@ -1,4 +1,6 @@
-#seq-queue - queue to keep request process in sequence
+seq-queue - queue to keep request process in sequence
+=====================================================
+
 Seq-queue is simple tool to keep requests to be executed in order.
 
 As we known, Node.js codes run in asynchronous mode and the callbacks are unordered. But sometimes we may need the requests to be processed in order. For example, in a game, a player would do some operations such as turn right and go ahead. And in the server side, we would like to process these requests one by one, not do them all at the same time.
@@ -9,7 +11,7 @@ Seq-queue is a FIFO task queue and we can push tasks as we wish, anytime(before 
 
 Seq-queue add timeout for each task execution. If a task throws an uncaught exception in its call back or a developer forgets to call `task.done()` callback, queue would be blocked and would not execute the left tasks. To avoid these situations, seq-queue set a timeout for each task. If a task timeout, queue would drop the task and notify develop by a 'timeout' event and then invoke the next task. Any `task.done()` invoked in a timeout task would be ignored.
 
-+ Tags: node.js
+ * Tags: node.js
 
 ##Installation
 ```
