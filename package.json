@@ -1,7 +1,7 @@
 {
 	"name": "seq-queue", 
 	"author": "changchang <changchang005@gmail.com>", 
-	"version": "0.0.4", 
+	"version": "0.0.5", 
 	"description": "A simple tool to keep requests to be executed in order.", 
 	"homepage": "https://github.com/changchang/seq-queue", 
 	"repository": {

@@ -274,5 +274,34 @@ describe('seq-queue', function() {
 				done();
 			}, 500);
 		});
+
+		it('should be ok when task throw a error after done was invoked', function(done) {
+			var queue = SeqQueue.createQueue();
+			var errorCount = 0;
+			var taskCount = 0;
+			//add timeout listener
+			queue.on('error', function(err, task) {
+				errorCount++;
+				should.exist(err);
+				should.exist(task);
+			});
+			
+			queue.push(function(task) {
+				taskCount++;
+				task.done();
+				throw new Error('some error');
+			}).should.be.true;
+			
+			queue.push(function(task) {
+				taskCount++;
+				task.done();
+			});
+			
+			setTimeout(function() {
+				taskCount.should.equal(2);
+				errorCount.should.equal(1);
+				done();
+			}, 500);
+		});
 	});
 });
