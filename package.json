@@ -10,7 +10,7 @@
 	},
 	"dependencies": {},
 	"devDependencies": {
-		"mocha": ">=0.0.1",
-		"should": ">=0.0.1"
+		"mocha": "^6.2.2",
+		"should": "^13.2.3"
 	}
 }
